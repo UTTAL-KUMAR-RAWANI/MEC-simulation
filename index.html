@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Edge Computing (MEC) — Network Simulation</title>
+    <meta name="description"
+        content="Visual and behavioral simulation of Mobile Edge Computing (MEC) bringing computing resources closer to mobile users. Professional academic presentation for B.Tech.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div id="app-root" class="app-layout">
+        <!-- 1. HEADER -->
+        <header class="app-header glass-header">
+            <div class="header-left">
+                <div class="header-logo-glow">
+                    <span class="logo-icon">📡</span>
+                </div>
+                <div class="header-titles">
+                    <h1 class="header-title">MOBILE EDGE COMPUTING</h1>
+                    <p class="header-subtitle">Interactive Network Simulation <span class="tag-academic">B.Tech
+                            Presentation</span></p>
+                </div>
+            </div>
+
+            <!-- PROMINENT COMPUTING MODE SELECTOR -->
+            <div class="mode-switcher-container">
+                <span class="mode-switcher-label">COMPUTING MODE</span>
+                <div class="mode-pill-group">
+                    <button id="mode-btn-cloud" class="mode-pill-btn mode-pill-cloud" title="Conventional Centralized Cloud Architecture">
+                        <span class="mode-pill-icon">☁</span> TRADITIONAL CLOUD
+                    </button>
+                    <button id="mode-btn-mec" class="mode-pill-btn mode-pill-mec active" title="Mobile Edge Computing Architecture (Default)">
+                        <span class="mode-pill-icon">⚡</span> MEC
+                    </button>
+                    <button id="mode-btn-compare" class="mode-pill-btn mode-pill-compare" title="Side-by-Side Architectural Comparison">
+                        <span class="mode-pill-icon">⚖️</span> COMPARE
+                    </button>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div id="live-status-indicator" class="status-pill glass-pill">
+                    <span class="status-dot green animate-ping"></span>
+                    <span class="status-text text-green">LIVE SIMULATION</span>
+                </div>
+                <button id="btn-presentation" class="btn-presentation-pill"
+                    title="Toggle Classroom Presentation Mode (Key: P)">
+                    <span class="pres-icon">🖥️</span> PRESENTATION MODE
+                </button>
+            </div>
+        </header>
+
+        <!-- ACADEMIC NOTICE & ARCHITECTURAL EDUCATIONAL STRIP -->
+        <div class="academic-disclaimer-strip">
+            <div class="disclaimer-left">
+                <span class="badge-notice" id="mode-architecture-badge">NEARBY COMPUTING</span>
+                <span id="educational-architecture-desc">“Computing resources are placed closer to the user at the 5G Base Station.”</span>
+            </div>
+            <span class="keyboard-hints">Shortcuts: <strong>Space</strong> (Start/Pause) • <strong>R</strong> (Reset) •
+                <strong>M</strong> (Cycle Mode) • <strong>U</strong> (UAV-MEC) • <strong>P</strong>
+                (Presentation)</span>
+        </div>
+
+        <!-- 2. MAIN SIMULATION VIEW (HERO FOCUS: 70-75% OF SCREEN) -->
+        <main class="app-main">
+            <!-- 5 ESSENTIAL DYNAMIC METRICS CARDS -->
+            <div class="metrics-grid">
+                <div class="metric-card glass-panel">
+                    <span class="metric-label">ACTIVE USERS</span>
+                    <div class="metric-val-row">
+                        <span id="metric-active-users" class="metric-value text-cyan">6</span>
+                        <span class="metric-sub">5G Mobile UEs</span>
+                    </div>
+                </div>
+                <div class="metric-card glass-panel" id="card-node-type">
+                    <span id="metric-label-node" class="metric-label">ACTIVE MEC NODES</span>
+                    <div class="metric-val-row">
+                        <span id="metric-active-mec" class="metric-value text-green">5</span>
+                        <span id="metric-mec-sub" class="metric-sub">CPU • GPU • Cache</span>
+                    </div>
+                </div>
+                <div class="metric-card glass-panel">
+                    <span class="metric-label">TASKS PROCESSED</span>
+                    <div class="metric-val-row">
+                        <span id="metric-tasks-processed" class="metric-value text-emerald">0</span>
+                        <span id="metric-tasks-sub" class="metric-sub">Completed</span>
+                    </div>
+                </div>
+                <div class="metric-card glass-panel" id="card-load-type">
+                    <span id="metric-label-load" class="metric-label">EDGE LOAD</span>
+                    <div class="metric-val-row">
+                        <span id="metric-edge-load" class="metric-value text-green">42%</span>
+                        <span id="metric-load-sub" class="metric-sub">Capacity Used</span>
+                    </div>
+                </div>
+                <div class="metric-card glass-panel" id="card-rtt-type">
+                    <span id="metric-label-rtt" class="metric-label">SIMULATED RTT</span>
+                    <div class="metric-val-row">
+                        <span id="metric-simulated-rtt" class="metric-value text-cyan">~15 ms</span>
+                        <span id="metric-rtt-sub" class="metric-sub">SIMULATION VALUE</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NETWORK CANVAS STAGE (HERO: 70-75% HEIGHT) -->
+            <div class="network-stage-wrapper glass-panel">
+                <!-- PRESENTATION STEPPER HUD -->
+                <div id="presentation-stepper-bar" class="presentation-stepper-bar hidden">
+                    <div class="pres-step-badge">PRESENTATION STEP <span id="pres-step-num">1</span> OF 9</div>
+                    <div class="pres-step-content">
+                        <h4 id="pres-step-title" class="pres-step-title">Traditional Cloud Computing</h4>
+                        <p id="pres-step-desc" class="pres-step-desc">Notice the centralized cloud data center located far away from mobile users across the WAN transit network.</p>
+                    </div>
+                    <div class="pres-step-actions">
+                        <button id="btn-pres-prev" class="btn-pres-step">◀ PREVIOUS</button>
+                        <button id="btn-pres-next" class="btn-pres-step btn-pres-step-primary">NEXT STEP ▶</button>
+                        <button id="btn-pres-exit" class="btn-pres-step btn-pres-step-exit" title="Exit Presentation Mode">✕ EXIT</button>
+                    </div>
+                </div>
+
+                <div id="canvas-container" class="canvas-container">
+                    <svg id="network-svg" viewBox="0 0 1600 650" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"></svg>
+                    <canvas id="network-canvas" style="display: none;"></canvas>
+
+                    <!-- CLEAN COMPACT DATA FLOW LEGEND (TOP-RIGHT CORNER) -->
+                    <div class="canvas-legend glass-panel">
+                        <div class="legend-title" id="legend-title-text">DATA FLOW</div>
+                        <div class="legend-items" id="legend-items-container">
+                            <div class="legend-item"><span class="legend-dot" style="background:#00f0ff"></span> Sensor Data</div>
+                            <div class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span> Video Data</div>
+                            <div class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span> AI Request</div>
+                            <div class="legend-item"><span class="legend-dot" style="background:#10b981"></span> Edge Result</div>
+                            <div class="legend-item"><span class="legend-dot" style="background:#a855f7"></span> Cloud Sync</div>
+                        </div>
+                    </div>
+
+                    <!-- START EXPERIENCE IDLE OVERLAY -->
+                    <div id="start-overlay" class="start-overlay hidden">
+                        <div class="start-card glass-panel">
+                            <div class="start-badge">MOBILE EDGE COMPUTING SIMULATOR</div>
+                            <h2 class="start-title">MOBILE EDGE COMPUTING</h2>
+                            <p class="start-desc">“Computing Closer to the User”</p>
+                            <button id="btn-overlay-start" class="btn-start-primary pulse-button">
+                                ▶ START SIMULATION
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EDUCATIONAL TAKEAWAY STRIP -->
+                <div class="educational-takeaway-bar">
+                    <span class="edu-badge">CORE TAKEAWAY</span>
+                    <span class="edu-text">“MEC does not replace cloud computing. It brings suitable computing resources closer to users and works alongside the cloud.”</span>
+                </div>
+
+                <!-- CONTROLS & EVENT LOG FOOTER -->
+                <div class="stage-footer-grid">
+                    <!-- CLEAN SIMULATION CONTROL PANEL -->
+                    <div class="control-panel-box glass-panel">
+                        <div class="panel-section-title">
+                            <span>🎛️ SIMULATION CONTROLS</span>
+                        </div>
+
+                        <div class="controls-action-bar">
+                            <button id="btn-start" class="btn-ctrl btn-play">
+                                ▶ START SIMULATION
+                            </button>
+                            <button id="btn-pause" class="btn-ctrl btn-pause">
+                                ⏸ PAUSE
+                            </button>
+                            <button id="btn-reset" class="btn-ctrl btn-reset">
+                                ↻ RESET
+                            </button>
+                            <button id="btn-compare-task" class="btn-ctrl btn-compare-task hidden"
+                                title="Dispatch identical AI Video Analytics task to both architectures simultaneously">
+                                🚀 RUN SAME TASK: AI VIDEO ANALYTICS
+                            </button>
+                            <button id="btn-toggle-uav" class="btn-ctrl btn-uav active-uav"
+                                title="Toggle UAV-MEC Mobile Edge Node">
+                                🛸 UAV-MEC: <strong>ON</strong>
+                            </button>
+                        </div>
+
+                        <div class="controls-selectors-row">
+                            <div class="ctrl-group">
+                                <label class="ctrl-label">Simulation Speed:</label>
+                                <div class="speed-toggle-group">
+                                    <button class="btn-speed" data-speed="0.5">Slow</button>
+                                    <button class="btn-speed active" data-speed="1.0">Normal</button>
+                                    <button class="btn-speed" data-speed="2.0">Fast</button>
+                                </div>
+                            </div>
+
+                            <div class="ctrl-group">
+                                <label class="ctrl-label" for="select-user-activity">User Activity:</label>
+                                <select id="select-user-activity" class="styled-select">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LIVE EVENT LOG (STRICTLY 5 LATEST EVENTS) -->
+                    <div class="event-log-box glass-panel">
+                        <div class="log-header">
+                            <div class="log-title">
+                                <span class="live-dot-green"></span>
+                                <span>LIVE EVENT LOG</span>
+                            </div>
+                            <span class="log-count-tag">Latest 5 Events</span>
+                        </div>
+                        <div id="event-log-list" class="event-log-list">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- NODE INSPECTOR MODAL -->
+        <div id="inspector-modal" class="inspector-modal-backdrop hidden">
+            <div class="inspector-modal-box glass-panel">
+                <div class="inspector-header">
+                    <h3 id="inspector-title" class="inspector-modal-title">Node Telemetry</h3>
+                    <button id="inspector-close" class="btn-close-modal">✕</button>
+                </div>
+                <div id="inspector-content" class="inspector-modal-body">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <div class="footer-left">
+                <span>Mobile Edge Computing (MEC) Network Simulation • B.Tech Presentation</span>
+            </div>
+            <div class="footer-right">
+                <span class="tech-tag">HTML5 Canvas</span>
+                <span class="tech-tag">60 FPS Animation</span>
+                <span class="tech-tag">ETSI MEC Standards</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Application Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/simulation.js"></script>
+    <script src="js/network.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
